@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>تسجيل الدخول | كنزا</title>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #ffffff, #fafaf9);
+      color: #333;
+      padding: 50px;
+    }
+    .box {
+      max-width: 420px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 15px rgba(0,0,0,.08);
+      border-top: 5px solid #ff9800; /* برتقالي */
+    }
+    h2 {
+      text-align: center;
+      color: #ff9800;
+      margin-bottom: 20px;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      transition: border-color 0.3s;
+    }
+    input:focus {
+      border-color: #ff9800;
+      outline: none;
+    }
+    button {
+      background: #2e7d32; /* أخضر */
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #256d27;
+    }
+    a {
+      display: block;
+      text-align: center;
+      margin-top: 12px;
+      color: #ff9800;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>تسجيل الدخول</h2>
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">دخول</button>
+    </form>
+    <a href="{% url 'register' %}">ليس لديك حساب؟ إنشاء حساب</a>
+  </div>
+</body>
+</html>
