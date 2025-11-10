@@ -1,4 +1,7 @@
 from pathlib import Path
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 # =============================
 # 📂 المسارات الأساسية
@@ -39,6 +42,10 @@ INSTALLED_APPS = [
     'accounts',
     'products',
     'orders',
+
+    # مكتبة Cloudinary لتخزين الوسائط
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 
@@ -135,6 +142,19 @@ MEDIA_ROOT = MEDIA_DIR
 
 
 # =============================
+# ☁️ إعدادات Cloudinary لتخزين الوسائط
+# =============================
+cloudinary.config(
+    cloud_name='dnblq6aft',             # ✅ الاسم الصحيح من حسابك Cloudinary
+    api_key='184872396444896',          # ✅ مفتاح API من حسابك
+    api_secret='QP3aA8ObVr_OvHs66ES3QBfFCHk'  # ✅ المفتاح السري من حسابك
+)
+
+# جعل Django يستخدم Cloudinary كمخزن وسائط افتراضي
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+
+# =============================
 # 🧱 الإعداد الافتراضي لمعرف الجداول
 # =============================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -144,4 +164,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # 👥 تفعيل نموذج المستخدم المخصص
 # =============================
 AUTH_USER_MODEL = 'accounts.Account'
-
