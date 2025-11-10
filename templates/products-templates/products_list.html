@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<title>كنزا — الصفحة الرئيسية</title>
+<title>كنزا — الأواني المنزلية</title>
 <style>
   body {
     font-family: "Cairo", sans-serif;
@@ -12,26 +12,16 @@
     padding: 0;
   }
 
-  /* البنر الرئيسي */
   .hero {
     background: linear-gradient(135deg,#2e7d32,#ff9800);
     color: white;
     text-align: center;
-    padding: 100px 20px;
+    padding: 80px 20px;
   }
 
-  .hero h1 {
-    font-size: 42px;
-    margin-bottom: 10px;
-  }
+  .hero h2 { font-size: 38px; margin-bottom: 10px; }
+  .hero p { font-size: 18px; }
 
-  .hero p {
-    font-size: 18px;
-    margin: 0 auto;
-    max-width: 700px;
-  }
-
-  /* شبكة المنتجات */
   .products {
     display: grid;
     grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
@@ -49,32 +39,12 @@
     background: #fff;
   }
 
-  .product:hover {
-    transform: translateY(-5px);
-  }
+  .product:hover { transform: translateY(-5px); }
 
-  .product img {
-    width: 100%;
-    height: 220px;
-    object-fit: cover;
-  }
-
-  .product h3 {
-    color: #2e7d32;
-    margin: 10px 0;
-  }
-
-  .product p {
-    font-size: 14px;
-    color: #555;
-    margin: 5px 0 10px 0;
-  }
-
-  .price {
-    color: #ff9800;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
+  .product img { width: 100%; height: 220px; object-fit: cover; }
+  .product h3 { color: #2e7d32; margin: 10px 0; }
+  .product p { font-size: 14px; color: #555; margin: 5px 0 10px 0; }
+  .price { color: #ff9800; font-weight: bold; margin-bottom: 10px; }
 
   .product button {
     background: #ff9800;
@@ -85,42 +55,18 @@
     border-radius: 8px;
     cursor: pointer;
   }
-
-  .product button:hover {
-    background: #e68900;
-  }
-
-  /* زر عرض كل المنتجات */
-  .view-all {
-    text-align: center;
-    margin: 30px 0 60px 0;
-  }
-
-  .view-all a {
-    background: #2e7d32;
-    color: white;
-    padding: 12px 28px;
-    border-radius: 10px;
-    text-decoration: none;
-    font-size: 16px;
-  }
-
-  .view-all a:hover {
-    background: #256428;
-  }
+  .product button:hover { background: #e68900; }
 </style>
 </head>
 <body>
 
   {% include 'header.html' %}
 
-  <!-- البنر -->
   <section class="hero">
-    <h1>مرحبًا بك في متجر كنزا</h1>
+    <h2>مرحبًا بك في متجر كنزا</h2>
     <p>أواني منزلية أنيقة تجمع بين الجودة والجمال — لأن كل تفصيل في مطبخك يستحق الأفضل 🍽️</p>
   </section>
 
-  <!-- المنتجات المعروضة في الصفحة الرئيسية -->
   <section class="products">
     {% for product in products %}
     <div class="product">
@@ -135,16 +81,10 @@
       <button>أضف إلى السلة</button>
     </div>
     {% empty %}
-      <p>لا توجد منتجات متاحة حالياً.</p>
+      <p>لا توجد منتجات حالياً.</p>
     {% endfor %}
   </section>
 
-  <!-- زر عرض جميع المنتجات -->
-  <div class="view-all">
-    <a href="{% url 'products_list' %}">عرض جميع المنتجات</a>
-  </div>
-
   {% include 'footer.html' %}
-
 </body>
 </html>
