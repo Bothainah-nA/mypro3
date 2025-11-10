@@ -1,12 +1,84 @@
-<header style="background:linear-gradient(90deg,#2e7d32,#4caf50);color:white;padding:15px 40px;display:flex;justify-content:space-between;align-items:center;">
-  <div style="display:flex;align-items:center;gap:10px;">
-    <img src="/static/images/logo.png" alt="كنزا" style="width:50px;height:50px;border-radius:50%;border:2px solid #ff9800;">
-    <h1 style="font-size:24px;font-weight:bold;">كنزا — أواني منزلية</h1>
-  </div>
-  <nav>
-    <a href="#" style="color:white;text-decoration:none;margin:0 10px;">الرئيسية</a>
-    <a href="#" style="color:white;text-decoration:none;margin:0 10px;">المنتجات</a>
-    <a href="#" style="color:white;text-decoration:none;margin:0 10px;">عروضنا</a>
-    <a href="#" style="color:white;text-decoration:none;margin:0 10px;">اتصل بنا</a>
-  </nav>
-</header>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    header {
+      background: linear-gradient(135deg, #2e7d32, #43a047);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 40px;
+      font-family: 'Cairo', sans-serif;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: white;
+    }
+
+    nav {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: white;
+      background-color: #ff9800;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+
+    nav a:hover {
+      background-color: #fb8c00;
+    }
+
+    .outline {
+      background-color: transparent;
+      border: 2px solid #ff9800;
+    }
+
+    .outline:hover {
+      background-color: #ff9800;
+    }
+
+    .welcome {
+      color: #fff;
+      font-weight: 600;
+      margin-inline-end: 8px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <h1>كنزا</h1>
+    </div>
+
+    <nav>
+      {% if user.is_authenticated %}
+        <!-- ✅ المستخدم مسجل دخول -->
+        <span class="welcome">مرحبًا، {{ user.username }} 👋</span>
+        <a href="{% url 'logout' %}" class="outline">تسجيل الخروج</a>
+      {% else %}
+        <!-- ✅ المستخدم غير مسجل دخول -->
+        <a href="{% url 'register' %}" class="outline">إنشاء حساب</a>
+        <a href="{% url 'login' %}">تسجيل الدخول</a>
+      {% endif %}
+    </nav>
+  </header>
+</body>
+</html>
