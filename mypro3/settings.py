@@ -1,36 +1,35 @@
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 
 # =============================
+# 📦 تحميل متغيرات البيئة من ملف .env
+# =============================
+load_dotenv()
+
+# =============================
 # 📂 المسارات الأساسية
 # =============================
 BASE_DIR = Path(__file__).resolve().parent.parent
-TEMPLATES_DIR = BASE_DIR / 'templates'   # مجلد القوالب العام
-STATIC_DIR = BASE_DIR / 'static'         # مجلد الملفات الثابتة أثناء التطوير
-STATIC_ROOT = BASE_DIR / 'staticfiles'   # مجلد تجميع الملفات الثابتة عند التنفيذ
-MEDIA_DIR = BASE_DIR / 'media'           # مجلد ملفات الوسائط (المرفوعة من المستخدمين)
-
+TEMPLATES_DIR = BASE_DIR / 'templates'
+STATIC_DIR = BASE_DIR / 'static'
+MEDIA_DIR = BASE_DIR / 'media'
 
 # =============================
-# 🔐 مفتاح الأمان (يُستخدم فقط في بيئة التطوير)
+# 🔐 مفاتيح الأمان
 # =============================
-SECRET_KEY = 'django-insecure-!b95e8l4s7egpsuiq9c7__tgtexuxophsf#t(d4k(jti80d=-g'
-
-
-# =============================
-# ⚙️ وضع التطوير
-# =============================
-DEBUG = True
-ALLOWED_HOSTS = []
-
+SECRET_KEY = os.getenv('SECRET_KEY', 'unsafe-secret-key')
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # =============================
-# 🧩 التطبيقات المثبتة Installed Apps
+# 🧩 التطبيقات المثبتة
 # =============================
 INSTALLED_APPS = [
-    # تطبيقات Django الافتراضية
+    # Django الافتراضية
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,11 +42,10 @@ INSTALLED_APPS = [
     'products',
     'orders',
 
-    # مكتبة Cloudinary لتخزين الوسائط
+    # Cloudinary
     'cloudinary',
     'cloudinary_storage',
 ]
-
 
 # =============================
 # ⚙️ الوسائط Middleware
@@ -62,19 +60,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
 # =============================
-# 🌐 إعدادات الروابط والقوالب Templates
+# 🌐 القوالب Templates
 # =============================
 ROOT_URLCONF = 'mypro3.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-
-        # المسار العام للقوالب
         'DIRS': [TEMPLATES_DIR],
-
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -87,23 +81,31 @@ TEMPLATES = [
     },
 ]
 
-
-# =============================
-# 🚀 إعدادات التطبيق الرئيسي
-# =============================
 WSGI_APPLICATION = 'mypro3.wsgi.application'
 
-
 # =============================
-# 🗄️ قاعدة البيانات
+# 🗄️ قواعد البيانات
 # =============================
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DEBUG:
+    # قاعدة بيانات التطوير
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
-
+else:
+    # قاعدة بيانات الإنتاج (PostgreSQL)
+    DATABASES = {
+        'default': {
+            'ENGINE': os.getenv('DB_ENGINE'),
+            'NAME': os.getenv('DB_NAME'),
+            'USER': os.getenv('DB_USER'),
+            'PASSWORD': os.getenv('DB_PASSWORD'),
+            'HOST': os.getenv('DB_HOST'),
+            'PORT': os.getenv('DB_PORT'),
+        }
+    }
 
 # =============================
 # 🔐 التحقق من كلمات المرور
@@ -115,52 +117,40 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-
 # =============================
 # 🌍 اللغة والمنطقة الزمنية
 # =============================
 LANGUAGE_CODE = 'ar'
 TIME_ZONE = 'Asia/Riyadh'
-
 USE_I18N = True
 USE_TZ = True
 
-
 # =============================
-# 🎨 الملفات الثابتة (Static Files)
+# 🎨 الملفات الثابتة
 # =============================
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR]
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # المسار النهائي لتجميع الملفات
-
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # =============================
-# 🖼️ ملفات الوسائط (Media Files)
+# 🖼️ ملفات الوسائط
 # =============================
 MEDIA_URL = '/media/'
 MEDIA_ROOT = MEDIA_DIR
 
-
 # =============================
-# ☁️ إعدادات Cloudinary لتخزين الوسائط
+# ☁️ Cloudinary
 # =============================
 cloudinary.config(
-    cloud_name='dnblq6aft',             # ✅ الاسم الصحيح من حسابك Cloudinary
-    api_key='184872396444896',          # ✅ مفتاح API من حسابك
-    api_secret='QP3aA8ObVr_OvHs66ES3QBfFCHk'  # ✅ المفتاح السري من حسابك
+    cloud_name=os.getenv('CLOUD_NAME'),
+    api_key=os.getenv('CLOUD_API_KEY'),
+    api_secret=os.getenv('CLOUD_API_SECRET'),
 )
 
-# جعل Django يستخدم Cloudinary كمخزن وسائط افتراضي
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-
 # =============================
-# 🧱 الإعداد الافتراضي لمعرف الجداول
+# 🧱 إعدادات عامة
 # =============================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-# =============================
-# 👥 تفعيل نموذج المستخدم المخصص
-# =============================
 AUTH_USER_MODEL = 'accounts.Account'

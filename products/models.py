@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _  # لدعم اللغة العربية في لوحة التحكم
+from cloudinary.models import CloudinaryField  # ✅ استيراد حقل CloudinaryField لرفع الصور للسحابة
 
 
 class Category(models.Model):
@@ -48,12 +49,15 @@ class Product(models.Model):
         decimal_places=2,
         verbose_name=_("السعر")
     )
-    image = models.ImageField(
-        upload_to="products/",
+
+    # ✅ الحقل الذي يرفع الصور تلقائيًا إلى Cloudinary
+    image = CloudinaryField(
+        "صورة المنتج",
+        folder="products/",     # اسم المجلد داخل حسابك في Cloudinary
         blank=True,
-        null=True,
-        verbose_name=_("صورة المنتج")
+        null=True
     )
+
     stock = models.PositiveIntegerField(
         default=0,
         verbose_name=_("الكمية المتوفرة")
