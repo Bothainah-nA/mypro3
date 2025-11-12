@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: mypro3
+    env: python
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
+      python manage.py migrate --noinput
+    startCommand: gunicorn mypro3.wsgi:application
+    staticPublishPath: staticfiles
